@@ -1,10 +1,7 @@
 package com.john.controller;
 
 import com.john.service.StuService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author johnconstantine
@@ -20,7 +17,7 @@ public class StuController {
     }
 
     @GetMapping("/get_stu")
-    public Object getStuInfo(int id) {
+    public Object getStuInfo(@RequestParam int id) {
         return stuService.getStuInfo(id);
     }
 
@@ -31,13 +28,13 @@ public class StuController {
     }
 
     @PostMapping("/update_stu")
-    public Object updateStu(int id) {
+    public Object updateStu(@RequestParam int id) {
         stuService.updateById(id);
         return "ok";
     }
 
     @PostMapping("/delete_stu")
-    public Object deleteStu(int id) {
+    public Object deleteStu(@RequestParam int id) {
         stuService.deleteById(id);
         return "ok";
     }
