@@ -3,6 +3,8 @@ package com.john.controller;
 import com.john.pojo.bo.UserBo;
 import com.john.service.UserService;
 import com.john.utils.IMOOCJSONResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @author johnconstantine
  */
 @RestController
+@Api(value = "用户信息管理")
 @RequestMapping("/passport")
 public class PassPortController {
 
@@ -34,6 +37,7 @@ public class PassPortController {
         return IMOOCJSONResult.ok();
     }
 
+    @ApiOperation(value = "用户注册", tags = "用户注册")
     @PostMapping("/regist")
     public IMOOCJSONResult regist(@RequestBody UserBo userBo) {
 
