@@ -2,10 +2,12 @@ package com.john.controller;
 
 import com.john.service.StuService;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author johnconstantine
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/api/stu")
 public class StuController {
