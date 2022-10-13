@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @author johnconstantine
  */
 @RestController
-@Api(value = "用户信息管理")
+@Api(value = "注册登录", tags = "用于登录注册的相关接口")
 @RequestMapping("/passport")
 public class PassPortController {
 
@@ -22,6 +22,7 @@ public class PassPortController {
         this.userService = userService;
     }
 
+    @ApiOperation(value = "判断用户名是否存在", tags = "判断用户名是否存在", httpMethod = "GET")
     @GetMapping("/username_is_exist")
     public IMOOCJSONResult queryUserName(@RequestParam String username) {
         // 1、检验参数是否为空
@@ -37,7 +38,7 @@ public class PassPortController {
         return IMOOCJSONResult.ok();
     }
 
-    @ApiOperation(value = "用户注册", tags = "用户注册")
+    @ApiOperation(value = "用户注册", tags = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
     public IMOOCJSONResult regist(@RequestBody UserBo userBo) {
 
