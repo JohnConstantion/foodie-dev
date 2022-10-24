@@ -3,12 +3,17 @@ package com.john.controller;
 import com.john.pojo.Users;
 import com.john.pojo.bo.UserBo;
 import com.john.service.UserService;
+import com.john.utils.CookieUtils;
 import com.john.utils.IMOOCJSONResult;
+import com.john.utils.JsonUtils;
 import com.john.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author johnconstantine
@@ -42,7 +47,7 @@ public class PassPortController {
 
     @ApiOperation(value = "用户注册", tags = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
-    public IMOOCJSONResult regist(@RequestBody UserBo userBo) {
+    public IMOOCJSONResult regist(@RequestBody UserBo userBo, HttpServletRequest request, HttpServletResponse response) {
 
         String username = userBo.getUsername();
         String password = userBo.getPassword();
@@ -65,13 +70,15 @@ public class PassPortController {
             return IMOOCJSONResult.errorMsg("密码和验证密码不一致");
         }
         // 4、实现注册
-        userService.createUser(userBo);
-        return IMOOCJSONResult.ok();
+        Users user = userService.createUser(userBo);
+        setNullProperty(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+        return IMOOCJSONResult.ok(user);
     }
 
     @ApiOperation(value = "用户登录", tags = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
-    public IMOOCJSONResult login(@RequestBody UserBo userBo) throws Exception {
+    public IMOOCJSONResult login(@RequestBody UserBo userBo, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String username = userBo.getUsername();
         String password = userBo.getPassword();
@@ -88,6 +95,19 @@ public class PassPortController {
 
         // 4、实现查询
         Users user = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
+        setNullProperty(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+
         return IMOOCJSONResult.ok(user);
+    }
+
+    private void setNullProperty(Users users) {
+        users.setPassword(null);
+        users.setCreatedTime(null);
+        users.setUpdatedTime(null);
+        users.setBirthday(null);
+        users.setEmail(null);
+        users.setMobile(null);
+        users.setRealname(null);
     }
 }
