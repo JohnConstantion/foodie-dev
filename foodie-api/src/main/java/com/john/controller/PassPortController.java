@@ -1,5 +1,6 @@
 package com.john.controller;
 
+import com.john.pojo.Users;
 import com.john.pojo.bo.UserBo;
 import com.john.service.UserService;
 import com.john.utils.IMOOCJSONResult;
@@ -65,5 +66,27 @@ public class PassPortController {
         // 4、实现注册
         userService.createUser(userBo);
         return IMOOCJSONResult.ok();
+    }
+
+    @ApiOperation(value = "用户登录", tags = "用户登录", httpMethod = "POST")
+    @PostMapping("/login")
+    public IMOOCJSONResult login(@RequestBody UserBo userBo) {
+
+        String username = userBo.getUsername();
+        String password = userBo.getPassword();
+
+        // 0、判断用的的名字和密码是否为空
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            return IMOOCJSONResult.errorMsg("用户名或者密码不可为空");
+        }
+
+        // 1、判断密码的长度是否超过6位数
+        if (password.length() < 6) {
+            return IMOOCJSONResult.errorMsg("密码的长度需要超过6位数");
+        }
+
+        // 4、实现查询
+        Users user = userService.queryUserForLogin(username, password);
+        return IMOOCJSONResult.ok(user);
     }
 }

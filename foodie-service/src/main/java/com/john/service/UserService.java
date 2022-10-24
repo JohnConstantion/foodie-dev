@@ -23,4 +23,6 @@ public interface UserService {
      * @return {@link UserBo}
      */
     Users createUser(UserBo userBo);
+
+    Users queryUserForLogin(String username, String password);
 }

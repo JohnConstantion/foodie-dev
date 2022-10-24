@@ -63,4 +63,18 @@ public class UserServiceImpl implements UserService {
         usersMapper.insert(users);
         return users;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public Users queryUserForLogin(String username, String password) {
+        UserBo userBo = new UserBo();
+        userBo.setUsername(username);
+        try {
+            userBo.setPassword(MD5Utils.getMD5Str(password));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*通过名字和密码验证，目前密码查询有问题，所以先用名字查询对应的用户，因为不可以同名，所以不会查询出两条数据的usersMapper.selectByUser(userBo);*/
+        return usersMapper.selectByUserName(username);
+    }
 }
