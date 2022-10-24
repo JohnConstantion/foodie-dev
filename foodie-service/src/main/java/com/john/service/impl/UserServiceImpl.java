@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*通过名字和密码验证，目前密码查询有问题，所以先用名字查询对应的用户，因为不可以同名，所以不会查询出两条数据的usersMapper.selectByUser(userBo);*/
-        return usersMapper.selectByUserName(username);
+        return usersMapper.selectByUser(userBo);
     }
 }

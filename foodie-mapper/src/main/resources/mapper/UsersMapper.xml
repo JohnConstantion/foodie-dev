@@ -56,7 +56,7 @@
                 username = #{username,jdbcType=VARCHAR}
             </if>
             <if test="password != null">
-                `password`   = #{password,jdbcType=VARCHAR}
+              and  `password`   = #{password,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
