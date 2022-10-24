@@ -69,11 +69,7 @@ public class UserServiceImpl implements UserService {
     public Users queryUserForLogin(String username, String password) {
         UserBo userBo = new UserBo();
         userBo.setUsername(username);
-        try {
-            userBo.setPassword(MD5Utils.getMD5Str(password));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        userBo.setPassword(password);
         return usersMapper.selectByUser(userBo);
     }
 }

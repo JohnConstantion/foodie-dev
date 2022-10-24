@@ -4,6 +4,7 @@ import com.john.pojo.Users;
 import com.john.pojo.bo.UserBo;
 import com.john.service.UserService;
 import com.john.utils.IMOOCJSONResult;
+import com.john.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -70,7 +71,7 @@ public class PassPortController {
 
     @ApiOperation(value = "用户登录", tags = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
-    public IMOOCJSONResult login(@RequestBody UserBo userBo) {
+    public IMOOCJSONResult login(@RequestBody UserBo userBo) throws Exception {
 
         String username = userBo.getUsername();
         String password = userBo.getPassword();
@@ -86,7 +87,7 @@ public class PassPortController {
         }
 
         // 4、实现查询
-        Users user = userService.queryUserForLogin(username, password);
+        Users user = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
         return IMOOCJSONResult.ok(user);
     }
 }

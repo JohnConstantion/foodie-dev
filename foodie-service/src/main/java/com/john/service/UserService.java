@@ -24,5 +24,12 @@ public interface UserService {
      */
     Users createUser(UserBo userBo);
 
+    /**
+     * 根据用户的信息查询用户
+     *
+     * @param username username
+     * @param password md5 password
+     * @return {@link  Users}
+     */
     Users queryUserForLogin(String username, String password);
 }
