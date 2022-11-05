@@ -1,5 +1,6 @@
 package com.john.controller;
 
+import com.john.enums.Number;
 import com.john.pojo.Users;
 import com.john.pojo.bo.UserBo;
 import com.john.service.UserService;
@@ -62,7 +63,7 @@ public class PassPortController {
             return IMOOCJSONResult.errorMsg("用户名已经存在");
         }
         // 2、判断密码的长度是否超过6位数
-        if (password.length() < 6) {
+        if (password.length() < Number.six.type) {
             return IMOOCJSONResult.errorMsg("密码的长度需要超过6位数");
         }
         // 3、判断密码和确认密码是否一致
@@ -89,16 +90,28 @@ public class PassPortController {
         }
 
         // 1、判断密码的长度是否超过6位数
-        if (password.length() < 6) {
+        if (password.length() < Number.six.type) {
             return IMOOCJSONResult.errorMsg("密码的长度需要超过6位数");
         }
 
         // 4、实现查询
         Users user = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
+        if (user == null) {
+            return IMOOCJSONResult.errorMsg("账户或者秘密错误，请输入正确的账户或者秘密");
+        }
         setNullProperty(user);
         CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
 
         return IMOOCJSONResult.ok(user);
+    }
+
+    @ApiOperation(value = "用户退出", tags = "用户退出", httpMethod = "POST")
+    @PostMapping("/logout")
+    public IMOOCJSONResult logout(@RequestParam String userId, HttpServletRequest request, HttpServletResponse response) {
+        CookieUtils.deleteCookie(request, response, "user");
+        //todo 账户退出之后需要清楚购物车的数据
+        //todo 分布式账户退出之后，要清楚账户数据
+        return IMOOCJSONResult.ok();
     }
 
     private void setNullProperty(Users users) {
