@@ -3,14 +3,13 @@ package com.john.controller;
 import com.john.enums.YesOrNo;
 import com.john.pojo.Carousel;
 import com.john.pojo.Category;
+import com.john.pojo.vo.CategoryVO;
 import com.john.service.CarouselService;
 import com.john.service.CategoryService;
 import com.john.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,10 +37,20 @@ public class IndexController {
         return IMOOCJSONResult.ok(carouselList);
     }
 
-    @ApiOperation(value = "获得首页商品分类（一级分类", tags = "获得首页商品分类（一级分类", httpMethod = "GET")
+    @ApiOperation(value = "获得首页商品分类（一级分类)", tags = "获得首页商品分类（一级分类)", httpMethod = "GET")
     @GetMapping("/cats")
     public IMOOCJSONResult cats() {
         List<Category> categories = categoryService.queryAllRootLevelCat();
+        return IMOOCJSONResult.ok(categories);
+    }
+
+    @ApiOperation(value = "获得商品子分类", tags = "获得商品子分类", httpMethod = "GET")
+    @GetMapping("/subCat/{rootCatId}")
+    public IMOOCJSONResult subCat(@PathVariable Integer rootCatId) {
+        if (rootCatId == null) {
+            return IMOOCJSONResult.errorMsg("分类不存在");
+        }
+        List<CategoryVO> categories = categoryService.getSubCatList(rootCatId);
         return IMOOCJSONResult.ok(categories);
     }
 
