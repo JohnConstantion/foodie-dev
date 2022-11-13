@@ -1,7 +1,13 @@
 package com.john.mapper;
 
 import com.john.pojo.ItemsComments;
+import com.john.pojo.vo.ItemCommentVO;
+import com.john.pojo.vo.MyCommentVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 商品评价查询
@@ -49,6 +55,14 @@ public interface ItemsCommentsMapper {
      * @return 评价的数量
      */
     Integer selectCounts(ItemsComments record);
+
+    /**
+     * 查询评价
+     *
+     * @param map map
+     * @return {@link List<ItemCommentVO>}
+     */
+    List<ItemCommentVO> queryItemComments(@Param("paramsMap") Map<String, Object> map);
 
     /**
      * 批量修改数据

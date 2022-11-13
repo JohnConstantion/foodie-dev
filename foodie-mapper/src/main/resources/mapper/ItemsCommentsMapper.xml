@@ -15,7 +15,7 @@
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_id, item_id, item_name, item_spec_id, sepc_name, comment_level, content, 
     created_time, updated_time
@@ -40,6 +40,26 @@
               and comment_level = #{commentLevel,jdbcType=INTEGER}
             </if>
         </where>
+    </select>
+    <select id="queryItemComments" parameterType="Map" resultType="com.john.pojo.vo.ItemCommentVO">
+        SELECT
+        ic.comment_level as commentLevel,
+        ic.content as content,
+        ic.sepc_name as specName,
+        ic.created_time as createdTime,
+        u.face as userFace,
+        u.nickname as nickname
+        FROM
+        items_comments ic
+        LEFT JOIN
+        users u
+        ON
+        ic.user_id = u.id
+        WHERE
+        ic.item_id = #{paramsMap.itemId}
+        <if test=" paramsMap.level != null and paramsMap.level != '' ">
+            AND ic.comment_level = #{paramsMap.level}
+        </if>
     </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--@mbg.generated-->

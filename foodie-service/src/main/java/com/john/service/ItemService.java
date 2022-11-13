@@ -5,6 +5,8 @@ import com.john.pojo.ItemsImg;
 import com.john.pojo.ItemsParam;
 import com.john.pojo.ItemsSpec;
 import com.john.pojo.vo.CommentLevelCountsVO;
+import com.john.pojo.vo.ItemCommentVO;
+import com.john.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -53,5 +55,16 @@ public interface ItemService {
      * @return {@link CommentLevelCountsVO}
      */
     CommentLevelCountsVO queryCommentLevelCounts(String itemId);
+
+    /**
+     * 根据商品ID查询商品的评价(分页）
+     *
+     * @param itemId   商品ID
+     * @param level    评价分类
+     * @param page     页数
+     * @param pageSize 每页数量
+     * @return {@link List<ItemCommentVO>}
+     */
+    PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
 
 }
